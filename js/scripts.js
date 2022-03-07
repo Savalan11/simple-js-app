@@ -3,7 +3,7 @@ alert('Hello world');
 
   let favoriteFood = [{
 
-  name: 'Anana',
+  name: 'Ananas',
   height: 0.8,
   type: ['grass', 'poison']
 },
