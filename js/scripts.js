@@ -1,36 +1,34 @@
-alert('Hello world');
+  let pokemonList = [{
 
-
-  let favoriteFood = [{
-
-  name: 'Ananas',
+  name: 'Bulbasaur',
   height: 0.8,
+  weight: 2.1
   type: ['grass', 'poison']
 },
 
 {
-  name: 'Banana',
+  name: 'Blastoise',
   height: 2.1,
   weight: 18,
   type: ['fire']
 },
 
 {
-  name: 'Apple',
+  name: 'Caterpie',
   height: 1.8,
   weight: 3.3,
   type: ['dragon']
 },
                       {
-  name: 'Pineapple',
+  name: 'Charmeleon',
   height: 7,
   weight: 2.5,
   type: ['dragon']
 }];
-for (let i=0; i < favoriteFood.length; i++){
-  if(favoriteFood[i].height > 3){
-    document.write(favoriteFood[i].name + "( height : " + favoriteFood[i].height + ")" + "What a delicios food!!! <br>")
+for (let i=0; i < pokemonList.length; i++){
+  if(pokemonList[i].height > 3){
+    document.write(pokemonList[i].name + "( height : " + pokemonList[i].height + ")" + "What a delicios figure!!! <br>")
   }else {
-  document.write(favoriteFood[i].name + "( height : " + favoriteFood[i].height + ")<br>")
+  document.write(pokemonList[i].name + "( height : " + pokemonList[i].height + ")<br>")
 }
 }
