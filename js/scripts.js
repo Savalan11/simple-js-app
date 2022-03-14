@@ -8,7 +8,7 @@ type: ['grass', 'poison']
 
 {
 name: 'Blastoise',
-height: 1.6,
+height: 3.6,
 weight: 85.5,
 type: ['fire']
 },
@@ -27,7 +27,7 @@ type: ['dragon']
 }];
 for (let i=0; i < pokemonList.length; i++){
 if(pokemonList[i].height > 3){
-  document.write(pokemonList[i].name + "( height : " + pokemonList[i].height + ")" + "What a unique figure!!! <br>")
+  document.write(pokemonList[i].name + "( height : " + pokemonList[i].height + ")" + "Wow that's big!!! <br>")
 }else {
 document.write(pokemonList[i].name + "( height : " + pokemonList[i].height + ")<br>")
 }
