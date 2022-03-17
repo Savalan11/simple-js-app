@@ -91,7 +91,7 @@ let pokemonRepository = (function() {
     showDetails: showDetails
   }
 })();
-// forEach loop
+// Updated forEach loop
 pokemonRepository.getAll().forEach(function(pokemon) {
   pokemonRepository.addListItem(pokemon)
 });
