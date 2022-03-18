@@ -82,7 +82,7 @@ let pokemonRepository = (function() {
     button.classList.add("button-class");
     listPokemon.appendChild(button);
     pokemonList.appendChild(listPokemon);
-    //addListener(button, pokemon);
+    addListener(button, pokemon);
   }
   return {
     add: add,
