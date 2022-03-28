@@ -1,3 +1,18 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+.container {
+  background-color: tomato;
+}
+.row {
+  background-color: tomato;
+  font-size: 18px;
+}
+.list-group-item {
+  background-color: #B4ECE3;
+}
 .button-class {
   padding: 22px 45px;
   text-align: center;
@@ -12,3 +27,36 @@
   border-radius: 25%;
   cursor: pointer;
 }
+.navbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: tomato;
+}
+.logo {
+  width: 160px;
+  cursor: pointer;
+  margin: 30px 0;
+}
+.menu-icon {
+  width: 25px;
+  cursor: pointer;
+  display: none;
+}
+nav {
+  flex: 1;
+  text-align: right;
+}
+nav ul li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 30px;
+}
+nav ul li a {
+  text-decoration: none;
+  color: #000;
+  font-size: 20px;
+}
+/*nav ul li a:hover{
+  color: blue;
+}*/
