@@ -1,131 +1,115 @@
+//Start of IIFE
+let pokemonRepository = (function () {
+  let pokemonList = [];
+  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=52';
 
-//pokemon respository in which the pokemon´s list is included
-let PokemonRepository = (function () {
-let PokemonList= [];
-let ApiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=50';
-let modalContainer = document.querySelector('#modal-container');
-// The pokenomonlist is an empty Array which is linked to the Pokemon API
-// This is important in terms of switching from the static list to a complete list of Pokemon e.g ApiUrl
-//modal at the top so all funtions may access this variable
-  function add (pokemon) {
-    if (
-      typeof pokemon === "object" &&
-      "name" in pokemon
-    ){
-      PokemonList.push(pokemon);
-    } else {
-       console.log("pokemon is not correct");
-      }
-    }
-//condition, loop,function, to verify and inspect the type of object inserted into the code
+//add new pokemon to pokemonList
+function add(pokemon) {
+  // "add" function adds pokemon to the "pokemonList" via the "push" function
+  pokemonList.push(pokemon);
+}
+//return all pokemons
   function getAll() {
-  return PokemonList;
-}
-
-
-  function addListItem (pokemon) {
-    let PokemonList = document.querySelector('.list-group');
-    let ListPokemon = document.createElement('li');
-
-    let Button = document.createElement('Button');
-    Button.innerText = pokemon.name;
-    //I added this to trigger the modal and it functions successfully
-    Button.classList.add('list-group-item','list-group-item-action','text-center');
-    Button.setAttribute('data-toggle', 'modal');
-    Button.setAttribute('data-target', '#pokemonModal');
-
-  // How do I should have MAJ on Pokemon' names?
-
-    Button.classList.add('btnbtn-primary');// or btn btprimary.addclass with jQuery
-    ListPokemon.classList.add('list-group-item'); // to be confirmed
-
-    ListPokemon.appendChild(Button);
-    PokemonList.appendChild(ListPokemon);
-    Button.addEventListener('click', function () {
-    showDetails (pokemon);
-})
-}
-//creates a button, a eListener that is called,logged at every click
-  async function loadList() {
-  try {
-    const response = await fetch(ApiUrl);
-    const json = await response.json();
-    json.results.forEach(function (item) {
-      let pokemon = {
-      name: item.name,
-      detailsUrl: item.url
-      };
-      add(pokemon);
-    });
-  } catch (e) {
-    console.error(e);
+    return pokemonList;
   }
+
+//create button of pokemons
+  function addListItem(pokemon){
+    let pokemonList = document.querySelector('.list-group');
+    let listpokemon = document.createElement('li');
+    let button = document.createElement('button');
+    button.innerText = pokemon.name;
+    button.classList.add('btn-primary');
+    listpokemon.classList.add('group-list-item');
+    listpokemon.appendChild(button);
+    pokemonList.appendChild(listpokemon);
+    button.addEventListener('click', function() {
+      showDetails(pokemon);
+  })
 }
-//Async function using the fetch method to get pokemonlist from "ApiUrl"
-//result = response = promise= the Json function passed as a parameter of the fetch
-  async function loadDetails(item) {
-  let url = item.detailsUrl;
-  try {
-    const response = await fetch(url);
-    const details = await response.json();
-    // Allows details to item =
+  //load list of pokemon from apiUrl
+  function loadList() {
+      return fetch(apiUrl).then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        json.results.forEach(function (item) {
+          let pokemon = {
+            name: item.name,
+            detailsUrl: item.url
+          };
+          add(pokemon);
+          console.log(pokemon);
+        });
+      }).catch(function (e) {
+        console.error(e);
+      });
+    }
+//load data of each pokemon when click on pokemon
+    function loadDetails(item) {
+      let url = item.detailsUrl;
+      return fetch(url).then(function (response) {
+        return response.json();
+      }).then(function (details) {
+        // Now we add the details to the item
+        item.imageUrl = details.sprites.front_default;
+        item.height = details.height;
+        item.weight = details.weight;
+        item.types = details.types;
+        item.abilities = [];
+        for (let i = 0; i < details.abilities.length; i++) {
+          item.abilities.push(details.abilities[i].ability.name);
+        }
+      }).catch(function (e) {
+        console.error(e);
+      });
+    }
+//after click on pokemon button,load the data of pokemon from server
+    function showDetails(item) {
+      loadDetails(item).then(function () {
+        showModal(item);
+      });
+    }
 
-    item.imageUrl = details.sprites.front_default;
-    item.height = details.height;
-    item.types = details.types;
-  } catch (e) {
-    console.error(e);
-  }
-}
+    function showModal(item) {
+      // showModal function
+      let modalTitle = $('.modal-title'); // modalTitle
+      let modalBody = $('.modal-body'); // modalBody
+      // let modalHeader = $(".modal-header"); // no header so removed
 
+      let pokemonName = $('<h2>' + item.name + '</h2>');
 
-//Async function using the fetch method to get pokemonlist from "ApiUrl"
-//result = response = promise= the Json function passed as a parameter of fetch
-function showDetails(item) {
-   PokemonRepository.loadDetails(item).then(function () {
-     showModal(item);
-   });
- }
+      let pokemonHeight = $('<p>' + 'Height: ' + item.height + '</p>');
 
+      let pokemonWeight = $('<p>' + 'Weight: ' + item.weight + '</p>');
 
-//  addition to a search function
+      let pokemonAbilities = $('<p>' + 'Abilities: ' + item.abilities + '</p>');
 
-function showModal(item) {
-  let modalBody = $(".modal-body");
-  let modalTitle = $(".modal-title");
+      let pokemonImage = $('<img class=\'pokemon-modal-image\'>');
+      pokemonImage.attr('src', item.imageUrl); // pokemon image attribute loaded from 'item.imageUrl'
 
-  modalTitle.empty ();
-  modalBody.empty ();
+      modalTitle.empty(); // clears the modalTitle after display
+      modalBody.empty(); // clears the modalBody after display
 
-  let nameElement = $ ("<p> " + "Name : " + item.name + "</p> ");
-
-  let imageElement = document.createElement('img');
-  imageElement.setAttribute ("src", item.imageUrl);
-
-  let heightElement = $ ("<p> " + "Height : " + item.height + "</p> ")
-
-  modalTitle.append(nameElement);
-  modalBody.append(imageElement);
-  modalBody.append(heightElement);
-
-}
+      modalTitle.append(pokemonName); // displayment of pokemonname as a title in the modal
+      modalBody.append(pokemonImage); // displayment of pokemonname in the body of the modal
+      modalBody.append(pokemonHeight); // displayment of pokemonname in the body of the modal
+      modalBody.append(pokemonWeight); // displayment of pokemonname in the body of the modal
+      modalBody.append(pokemonAbilities); // pokemonDetails or abilities are displayed in the body of the modal
+    }
 
   return {
     add: add,
     getAll: getAll,
-    addListItem : addListItem,
-    loadList : loadList,
-    loadDetails : loadDetails,
-    showDetails : showDetails,
-    //searchPokemon : searchPokemon,
-    showModal : showModal // call back the modal as all previous functions
+    addListItem: addListItem,
+    loadList: loadList,
+    loadDetails: loadDetails,
+    showDetails: showDetails
   };
-})();
-// The code above is wrapped into an IIFE which protects my code and executes it automatically thanks to this function - ()
-// this applies to all the previously created fucntion in the IFFE
+})();//end of IIFE
 
-PokemonRepository.loadList().then(function () {
-  PokemonRepository.getAll().forEach(function (pokemon) {
-    PokemonRepository.addListItem(pokemon);
+
+pokemonRepository.loadList().then(function() {
+  pokemonRepository.getAll().forEach(function(pokemon){
+    pokemonRepository.addListItem(pokemon);
   });
 });
